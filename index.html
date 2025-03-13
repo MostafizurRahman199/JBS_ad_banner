@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Banner</title>
+    <style>
+        .ad-container {
+            width: 300px;
+            height: 600px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card {
+            width: 280px;
+            height: 260px;
+            background: white;
+            padding: 10px;
+            position: absolute;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            transform-origin: center center;
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+        }
+
+        .card:nth-child(odd) {
+            top: 15px;
+        }
+
+        .card:nth-child(even) {
+            bottom: 15px;
+        }
+
+        .card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 10px 5px 5px 5px;
+        }
+
+        .card-content h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3436;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .card-content p {
+            margin: 3px 0;
+            font-size: 12px;
+            color: #636e72;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-content p i {
+            font-size: 14px;
+            color: #0984e3;
+        }
+
+        .property-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #eee;
+        }
+
+        .property-stat {
+            text-align: center;
+        }
+
+        .property-stat span {
+            display: block;
+            font-size: 11px;
+            color: #b2bec3;
+        }
+
+        .property-stat strong {
+            color: #2d3436;
+            font-size: 13px;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="ad-container">
+        <div class="card-container" id="cardContainer">
+            <!-- Cards will be added dynamically via JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const projects = [
+            {
+                image: "https://picsum.photos/280/150?1",
+                name: "Green Valley Heights",
+                address: "123 Park Street, City",
+                landArea: "5000 sq.ft",
+                handoverDate: "December 2024",
+                link: "https://example.com/project1"
+            },
+            {
+                image: "https://picsum.photos/280/150?2",
+                name: "Blue Ocean Towers",
+                address: "456 Beach Road, City",
+                landArea: "7500 sq.ft",
+                handoverDate: "March 2025",
+                link: "https://example.com/project2"
+            },
+            {
+                image: "https://picsum.photos/280/150?3",
+                name: "Sunset Apartments",
+                address: "789 Hill Avenue, City",
+                landArea: "6000 sq.ft",
+                handoverDate: "June 2025",
+                link: "https://example.com/project3"
+            },
+            {
+                image: "https://picsum.photos/280/150?4",
+                name: "Sky Heights",
+                address: "321 Cloud Street, City",
+                landArea: "8000 sq.ft",
+                handoverDate: "September 2025",
+                link: "https://example.com/project4"
+            },
+            {
+                image: "https://picsum.photos/280/150?5",
+                name: "Garden Residency",
+                address: "654 Flora Road, City",
+                landArea: "5500 sq.ft",
+                handoverDate: "January 2025",
+                link: "https://example.com/project5"
+            },
+            {
+                image: "https://picsum.photos/280/150?6",
+                name: "Urban Living",
+                address: "987 Metro Avenue, City",
+                landArea: "4500 sq.ft",
+                handoverDate: "April 2025",
+                link: "https://example.com/project6"
+            }
+        ];
+
+        const cardContainer = document.getElementById('cardContainer');
+
+        // Create and append cards
+        projects.forEach((project, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <a href="${project.link}" target="_blank">
+                    <img src="${project.image}" alt="${project.name}">
+                    <div class="card-content">
+                        <h3>${project.name}</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> ${project.address}</p>
+                        <div class="property-stats">
+                            <div class="property-stat">
+                                <span>Area</span>
+                                <strong>${project.landArea}</strong>
+                            </div>
+                            <div class="property-stat">
+                                <span>Handover</span>
+                                <strong>${project.handoverDate}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            `;
+            cardContainer.appendChild(card);
+        });
+
+        // Animation logic
+        let currentIndex = 0;
+        const cards = document.querySelectorAll('.card');
+
+        function getRandomAnimation() {
+            const animations = [
+                {
+                    in: { transform: 'translateX(300px) rotate(15deg) scale(0.8)', opacity: '0' },
+                    center: { transform: 'translateX(0) rotate(0) scale(1)', opacity: '1' },
+                    out: { transform: 'translateX(-300px) rotate(-15deg) scale(0.8)', opacity: '0' }
+                },
+                {
+                    in: { transform: 'translateX(-300px) translateY(-50px) rotate(-20deg)', opacity: '0' },
+                    center: { transform: 'translateX(0) translateY(0) rotate(0)', opacity: '1' },
+                    out: { transform: 'translateX(300px) translateY(50px) rotate(20deg)', opacity: '0' }
+                },
+                {
+                    in: { transform: 'translateY(300px) scale(1.2)', opacity: '0' },
+                    center: { transform: 'translateY(0) scale(1)', opacity: '1' },
+                    out: { transform: 'translateY(-300px) scale(0.8)', opacity: '0' }
+                },
+                {
+                    in: { transform: 'translateX(300px) translateY(-100px) rotate(45deg)', opacity: '0' },
+                    center: { transform: 'translateX(0) translateY(0) rotate(0)', opacity: '1' },
+                    out: { transform: 'translateX(-300px) translateY(100px) rotate(-45deg)', opacity: '0' }
+                },
+                {
+                    in: { transform: 'scale(0) rotate(180deg)', opacity: '0' },
+                    center: { transform: 'scale(1) rotate(0)', opacity: '1' },
+                    out: { transform: 'scale(0) rotate(-180deg)', opacity: '0' }
+                }
+            ];
+            return animations[Math.floor(Math.random() * animations.length)];
+        }
+
+        function applyStyles(element, styles) {
+            Object.keys(styles).forEach(key => {
+                element.style[key] = styles[key];
+            });
+        }
+
+        function positionCards() {
+            const card1 = cards[currentIndex];
+            const card2 = cards[(currentIndex + 1) % cards.length];
+            const nextCard1 = cards[(currentIndex + 2) % cards.length];
+            const nextCard2 = cards[(currentIndex + 3) % cards.length];
+
+            // Show current and next pairs
+            cards.forEach((card, index) => {
+                if ([currentIndex, (currentIndex + 1) % cards.length, 
+                    (currentIndex + 2) % cards.length, (currentIndex + 3) % cards.length].includes(index)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Get random animations for each card
+            const animation1 = getRandomAnimation();
+            const animation2 = getRandomAnimation();
+
+            // Position current cards in center
+            applyStyles(card1, animation1.center);
+            applyStyles(card2, animation2.center);
+
+            // Position next cards off-screen
+            applyStyles(nextCard1, animation1.in);
+            applyStyles(nextCard2, animation2.in);
+
+            // Animate current cards out and next cards in
+            setTimeout(() => {
+                applyStyles(card1, animation1.out);
+                applyStyles(card2, animation2.out);
+                applyStyles(nextCard1, animation1.center);
+                applyStyles(nextCard2, animation2.center);
+            }, 3000);
+
+            // Update indices
+            setTimeout(() => {
+                currentIndex = (currentIndex + 2) % cards.length;
+                positionCards();
+            }, 3800);  // Slightly longer delay for smoother transitions
+        }
+
+        // Update the initial card styles
+        cards.forEach(card => {
+            card.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            card.style.opacity = '0';
+        });
+
+        // Start the animation
+        positionCards();
+    </script>
+</body>
+</html>
